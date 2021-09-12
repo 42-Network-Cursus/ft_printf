@@ -1,81 +1,123 @@
 #include "ft_printf.h"
 
-// TODEL
-
 #include <stdio.h>
-// 1. Quid bonus?
-// 2. Make it work : cspdiuxX% ! No buffer management (?)
-//      c = unsigned char
-//      s = const char * expected
-//      p = hexadecimal as if by %#x
-//      d = signed conv. signed decimal int ! no diff with i
-//      i = int
-//      u = unsigned decimal
-//      x = convert in unsigned hexa using abcdef
-//      X = convert in unsigned hexa using ABCDEF
-// %[$][flags][width][.precision][length modifier]conversion - order
-// 3. Errors + return msg
-// 4. free when malloc
 
-// TODEL
-static int check_format(const char *format, va_list ptr)
+size_t	ft_strlen(const char *s) //OG
 {
-    int     ret;
+	size_t	i;
 
-    ret = 1;
-/*
-    if (*format == 'c')
-    else if (*format == 's')
-    else if (*format == 'p')
-    else if (*format == 'd') O if - or . O ignored
-    else if (*format == 'i') O if - or . O ignored
-    else if (*format == 'u') O if - or . O ignored
-    else if (*format == 'x') #O if - or . O ignored
-    else if (*format == 'X') #O if - or . O ignored
-    else if (*format == '%')
+	if (s == NULL)
+		return (0);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
-    quid '-' flag ??
-*/
-    while (*(++format))
+int	ft_putnbr_base_int(int nb, char *base)
+{
+	char	str[30];
+	int		i;
+	int		len;
+
+	i = 0;
+	len = 0;
+	if (nb == -2147483648)
+	{
+		len += write(1, "-2147483648", 11);
+		return (len);
+	}
+	if (nb < 0)
+	{
+		nb = -nb;
+		len += write(1, "-", 1);
+	}
+	while (nb)
+	{
+		str[i++] = base[nb % 10];
+		nb /= 10;
+	}
+	while (i--)
+		len += write(1, &str[i], 1);
+	return (len);
+}
+
+int	ft_putnbr_base(size_t nb, char *base, int base_len, char c)
+{
+	char	str[30];
+	int		i;
+	int		len;
+
+	i = 0;
+	len = 0;
+	while (nb)
+	{
+		str[i++] = base[nb % base_len];
+		nb /= base_len;
+		len++;
+	}
+	while (len < 16 && c == 'p')
+		len += write(1, "0", 1);
+	while (i--)
+		write(1, &str[i], 1);
+	return (len);
+}
+
+static int ft_check_format(char *conv, char c)
+{
+    int i;
+
+    i = 0;
+    while (*conv && !i)
     {
-        if (*format == '-' ||*format == 'O' || *format == ' ' 
-        || *format == '#' || *format == '+')
-            ret++;
-        // else if *format == '.' ! order: flags precision
+        if (*conv == c)
+            i = 1;
+        conv++;
     }
-    printf("count = %d\n", ret);
-    return (ret);
+    return (i);
 }
 
 int ft_printf(const char *format, ...)
 {
-    va_list ptr;
+    va_list args;
     int     ret;
-    int     i;
      
-    va_start(ptr, format);
+    va_start(args, format);
     ret = 0;
     while (*format)
     {
-        int i = 0;
-        if (*format == '%')
+        if (*format == '%' && ft_check_format("cspdiuxX%", *(format + 1)))
         {
-            i = check_format(format, ptr);
-            format += i;
+            if (ft_check_format("c", *(format + 1)))
+                ret += ft_handle_char(args);
+            else if (ft_check_format("s", *(format + 1)))
+                ret += ft_handle_string(args);
+            else if (ft_check_format("p", *(format + 1)))
+                ret += ft_handle_pointer(args, 'p');
+			else if (ft_check_format("di", *(format + 1)))
+                ret += ft_handle_int(args);
+			else if (ft_check_format("u", *(format + 1)))
+                ret += ft_handle_uint(args, 'u');
+            format += 2;
         }
         else
-        {
-            write(1, &(*format++), 1);
-            ret++;
-        }
+            ret += write(1, &(*format++), 1);        
     }
-    va_end(ptr);
+    va_end(args);
     return (ret);
 }
 
 int main()
 {
-    char *s = "123";
-    printf("ret = %d\n", ft_printf("123%O-+ #.", s));
+    char c = 62;
+    char    *str = {NULL};
+	int	d = 2147483665;
+	unsigned int u = 0;
+ 
+//    printf("og ret = %d\n", printf("og = %p\n", str));
+//    printf("ft ret = %d\n", ft_printf("ft = %p\n", str));
+	
+	printf("og ret = %d\n", printf("og = %u\n", u));
+    printf("ft ret = %d\n", ft_printf("ft = %u\n", u));
     return (0);
 }
