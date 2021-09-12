@@ -4,7 +4,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 AR = ar rc
 OBJS = $(SRCS:.c=.o)
-SRCS = ft_printf.c ft_printf_handle.c
+SRCS = ft_printf.c ft_printf_handle.c ft_printf_handle2.c
 
 all : $(NAME)
 

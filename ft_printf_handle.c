@@ -42,19 +42,3 @@ int ft_handle_uint(va_list args, char c)
     arg = va_arg(args, unsigned int);
     return (ft_putnbr_base(arg, "0123456789", 10, c));
 }
-
-int ft_handle_hex(va_list args, char c)
-{
-    unsigned int arg;
-
-    arg = va_arg(args, unsigned int);
-    return (ft_putnbr_base(arg, "0123456789abcdef", 16, c));
-}
-
-int ft_handle_hex_upper(va_list args, char c)
-{
-    unsigned int arg;
-
-    arg = va_arg(args, unsigned int);
-    return (ft_putnbr_base(arg, "0123456789ABCDEF", 16, c));
-}
