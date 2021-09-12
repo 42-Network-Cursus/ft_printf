@@ -12,6 +12,8 @@ int ft_handle_string(va_list args);
 int ft_handle_pointer(va_list args, char c);
 int ft_handle_int(va_list args);
 int ft_handle_uint(va_list args, char c);
+int ft_handle_hex(va_list args, char c);
+int ft_handle_hex_upper(va_list args, char c);
 
 int ft_putnbr_base(size_t nb, char *base, int base_len, char c);
 int	ft_putnbr_base_int(int nb, char *base);

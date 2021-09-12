@@ -22,6 +22,8 @@ int	ft_putnbr_base_int(int nb, char *base)
 
 	i = 0;
 	len = 0;
+	if (nb == 0)
+		len = write(1, "0", 1);
 	if (nb == -2147483648)
 	{
 		len += write(1, "-2147483648", 11);
@@ -50,6 +52,8 @@ int	ft_putnbr_base(size_t nb, char *base, int base_len, char c)
 
 	i = 0;
 	len = 0;
+	if (nb == 0)
+		len = write(1, "0", 1);
 	while (nb)
 	{
 		str[i++] = base[nb % base_len];
@@ -98,6 +102,12 @@ int ft_printf(const char *format, ...)
                 ret += ft_handle_int(args);
 			else if (ft_check_format("u", *(format + 1)))
                 ret += ft_handle_uint(args, 'u');
+			else if (ft_check_format("x", *(format + 1)))
+                ret += ft_handle_hex(args, 'x');
+			else if (ft_check_format("X", *(format + 1)))
+                ret += ft_handle_hex_upper(args, 'X');
+			else if (ft_check_format("%", *(format + 1)))
+                ret += write(1, "%", 1);
             format += 2;
         }
         else
@@ -109,15 +119,45 @@ int ft_printf(const char *format, ...)
 
 int main()
 {
-    char c = 62;
-    char    *str = {NULL};
-	int	d = 2147483665;
-	unsigned int u = 0;
- 
-//    printf("og ret = %d\n", printf("og = %p\n", str));
-//    printf("ft ret = %d\n", ft_printf("ft = %p\n", str));
-	
-	printf("og ret = %d\n", printf("og = %u\n", u));
-    printf("ft ret = %d\n", ft_printf("ft = %u\n", u));
+    char 			c = 'P';
+    char   			*str = "Test";
+	int				d = 0;
+	unsigned int	u = 4294967295;
+
+//	c conversion
+//	printf("og ret = %d\n", printf("og = %c\n", c));
+//	printf("ft ret = %d\n", ft_printf("ft = %c\n", c));
+
+//	s conversion
+//	printf("og ret = %d\n", printf("og = %s\n", str));
+//	printf("ft ret = %d\n", ft_printf("ft = %s\n", str));
+
+//	p conversion
+//	printf("og ret = %d\n", printf("og = %p\n", str));
+//	printf("ft ret = %d\n", ft_printf("ft = %p\n", str));
+
+//	d conversion
+//	printf("og ret = %d\n", printf("og = %d\n", d));
+//	printf("ft ret = %d\n", ft_printf("ft = %d\n", d));
+
+//	i conversion
+//	printf("og ret = %d\n", printf("og = %i\n", d));
+//	printf("ft ret = %d\n", ft_printf("ft = %i\n", d));
+
+//	u conversion
+//	printf("og ret = %d\n", printf("og = %u\n", u));
+//	printf("ft ret = %d\n", ft_printf("ft = %u\n", u));
+
+//	x conversion
+//	printf("og ret = %d\n", printf("og = %x\n", u));
+//	printf("ft ret = %d\n", ft_printf("ft = %x\n", u));
+
+//	X conversion
+//	printf("og ret = %d\n", printf("og = %X\n", u));
+//	printf("ft ret = %d\n", ft_printf("ft = %X\n", u));
+
+//	% conversion
+	printf("og ret = %d\n", printf("og = %%\n", d));
+	printf("ft ret = %d\n", ft_printf("ft = %%\n"));
     return (0);
 }
