@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf_handle2.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cwastche </var/mail/cwastche>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/12 18:24:45 by cwastche          #+#    #+#             */
+/*   Updated: 2021/09/12 18:24:52 by cwastche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-int ft_handle_hex(va_list args, char c)
+int	ft_handle_hex(va_list args, char c)
 {
-    unsigned int arg;
+	unsigned int	arg;
 
-    arg = va_arg(args, unsigned int);
-    if (c == 'x')
-        return (ft_putnbr_base(arg, "0123456789abcdef", 16, c));
-    return (ft_putnbr_base(arg, "0123456789ABCDEF", 16, c));
+	arg = va_arg(args, unsigned int);
+	if (c == 'x')
+		return (ft_putnbr_base(arg, "0123456789abcdef", 16, c));
+	return (ft_putnbr_base(arg, "0123456789ABCDEF", 16, c));
 }
 
 size_t	ft_strlen(const char *s)
@@ -33,10 +45,7 @@ int	ft_putnbr_base_int(int nb, char *base)
 	if (nb == 0)
 		len = write(1, "0", 1);
 	if (nb == -2147483648)
-	{
-		len += write(1, "-2147483648", 11);
-		return (len);
-	}
+		return (write(1, "-2147483648", 11));
 	if (nb < 0)
 	{
 		nb = -nb;
