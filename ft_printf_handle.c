@@ -13,6 +13,8 @@ int ft_handle_string(va_list args)
     char *arg;
 
     arg = va_arg(args, char *);
+    if (arg == NULL)
+        return (write(1, "(null)", 6));
     return (write(1, arg, ft_strlen(arg)));
 }
 
