@@ -52,16 +52,16 @@ int	ft_putnbr_base(size_t nb, char *base, int base_len, char c)
 
 	i = 0;
 	len = 0;
+	if (c == 'p')
+		len += write(1, "0x", 2);
 	if (nb == 0)
-		len = write(1, "0", 1);
+		len += write(1, "0", 1);
 	while (nb)
 	{
 		str[i++] = base[nb % base_len];
 		nb /= base_len;
 		len++;
 	}
-	if (c == 'p')
-		len += write(1, "0x", 2);
 	while (i--)
 		write(1, &str[i], 1);
 	return (len);
@@ -97,7 +97,7 @@ int ft_printf(const char *format, ...)
             else if (ft_check_format("s", *(format + 1)))
                 ret += ft_handle_string(args);
             else if (ft_check_format("p", *(format + 1)))
-                ret += ft_handle_pointer(args, 'p');
+              ret += ft_handle_pointer(args, 'p');
 			else if (ft_check_format("di", *(format + 1)))
                 ret += ft_handle_int(args);
 			else if (ft_check_format("u", *(format + 1)))
@@ -116,7 +116,7 @@ int ft_printf(const char *format, ...)
     va_end(args);
     return (ret);
 }
-
+/*
 int main()
 {
     char 			c = 'P';
@@ -134,8 +134,8 @@ int main()
 //	printf("ft ret = %d\n", ft_printf("ft = %s\n", str));
 
 //	p conversion
-	printf("og ret = %d\n", printf("og = %p\n", &p));
-	printf("ft ret = %d\n", ft_printf("ft = %p\n", &p));
+	printf("og ret = %d\n", printf("og = %p\n", str));
+	printf("ft ret = %d\n", ft_printf("ft = %p\n", str));
 
 //	d conversion
 //	printf("og ret = %d\n", printf("og = %d\n", d));
@@ -161,4 +161,4 @@ int main()
 //	printf("og ret = %d\n", printf("og = %%\n", d));
 //	printf("ft ret = %d\n", ft_printf("ft = %%\n"));
     return (0);
-}
+}*/
